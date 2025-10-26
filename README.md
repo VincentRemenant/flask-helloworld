@@ -22,12 +22,26 @@ python app.py
 
 ## Déploiement sur Railway
 
+### ⚠️ Corrections pour l'erreur 502 Bad Gateway
+
+Si vous obtenez une erreur 502, c'est généralement dû à :
+1. **Mauvaise configuration du port** : Railway injecte une variable `PORT`
+2. **Serveur qui n'écoute pas sur `0.0.0.0`** : Doit écouter sur toutes les interfaces
+3. **Gunicorn mal configuré** : Le Procfile doit être correct
+
+### ✅ Configuration corrigée
+
+- **app.py** : Utilise `0.0.0.0` et la variable `PORT` de Railway
+- **Procfile** : `web: gunicorn --bind 0.0.0.0:$PORT app:app`
+- **Route /health** : Pour vérifier que l'app répond
+- **runtime.txt** : Force Python 3.11 compatible
+
 ### Méthode 1 : Depuis GitHub (Recommandée)
 
 1. **Poussez votre code sur GitHub** :
 ```bash
 git add .
-git commit -m "Préparer pour déploiement Railway"
+git commit -m "Corriger configuration pour Railway - Fix 502 error"
 git push origin main
 ```
 

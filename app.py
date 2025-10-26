@@ -14,12 +14,20 @@ def hello_world():
 def hello_name(name):
     return f'<h1>Hello, {name}!</h1><p>Ravi de vous rencontrer!</p>'
 
-# Point d'entrée principal
+# Route de santé pour Railway
+@app.route('/health')
+def health_check():
+    return {'status': 'healthy', 'message': 'Server is running'}, 200
+
+# Point d'entrée principal pour le développement local
 if __name__ == '__main__':
     # Utiliser les variables d'environnement pour Railway
     port = int(os.environ.get('PORT', 5000))
     host = os.environ.get('HOST', '0.0.0.0')
     debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    print(f"🚀 Démarrage du serveur sur {host}:{port}")
+    print(f"🐛 Mode debug: {debug}")
     
     # Lancer le serveur
     app.run(debug=debug, host=host, port=port)
