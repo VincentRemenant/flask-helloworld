@@ -22,19 +22,24 @@ python app.py
 
 ## Déploiement sur Railway
 
-### ⚠️ Corrections pour l'erreur 502 Bad Gateway
+### ⚠️ Migration Nixpacks → Docker
 
-Si vous obtenez une erreur 502, c'est généralement dû à :
-1. **Mauvaise configuration du port** : Railway injecte une variable `PORT`
-2. **Serveur qui n'écoute pas sur `0.0.0.0`** : Doit écouter sur toutes les interfaces
-3. **Gunicorn mal configuré** : Le Procfile doit être correct
+Railway a déprécié Nixpacks et utilise maintenant Docker par défaut.
 
-### ✅ Configuration corrigée
+### ✅ Configuration Docker mise à jour
 
-- **app.py** : Utilise `0.0.0.0` et la variable `PORT` de Railway
-- **Procfile** : `web: gunicorn --bind 0.0.0.0:$PORT app:app`
-- **Route /health** : Pour vérifier que l'app répond
-- **runtime.txt** : Force Python 3.11 compatible
+- **Dockerfile** : Build image Python 3.11 optimisée
+- **railway.json** : Utilise `DOCKERFILE` builder
+- **.dockerignore** : Optimise la taille de l'image
+- **app.py** : Configuration serveur compatible Railway
+- **Route /health** : Pour Railway health checks
+
+### 🐳 Avantages Docker vs Nixpacks
+
+- ✅ **Plus stable** et prévisible
+- ✅ **Build plus rapide** avec cache Docker
+- ✅ **Compatible** avec tous les environnements
+- ✅ **Contrôle total** de l'environnement
 
 ### Méthode 1 : Depuis GitHub (Recommandée)
 
