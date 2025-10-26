@@ -1,4 +1,5 @@
 from flask import Flask
+import os
 
 # Créer une instance de l'application Flask
 app = Flask(__name__)
@@ -15,5 +16,10 @@ def hello_name(name):
 
 # Point d'entrée principal
 if __name__ == '__main__':
-    # Lancer le serveur de développement
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    # Utiliser les variables d'environnement pour Railway
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    
+    # Lancer le serveur
+    app.run(debug=debug, host=host, port=port)
